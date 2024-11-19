@@ -10,8 +10,17 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class adapterRecView (private val listWayang: ArrayList<wayang>) : RecyclerView
-.Adapter<adapterRecView.ListViewHolder> () {
+class adapterRecView (private val listWayang: ArrayList<wayang>) : RecyclerView.Adapter<adapterRecView.ListViewHolder> () {
+
+    private lateinit var onItemClickCallback: OnItemClickCallBack
+
+    interface OnItemClickCallBack {
+        fun onItemClicked(data: wayang)
+    }
+
+    fun setOnItemClickCallBack(onItemClickCallBack: OnItemClickCallBack) {
+        this.onItemClickCallback = onItemClickCallBack
+    }
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var _namaWayang = itemView.findViewById<TextView>(R.id.namaWayang)
@@ -42,7 +51,8 @@ class adapterRecView (private val listWayang: ArrayList<wayang>) : RecyclerView
             .into(holder._gambarWayang)
 
         holder._gambarWayang.setOnClickListener {
-            Toast.makeText(holder.itemView.context, wayang.nama, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(holder.itemView.context, wayang.nama, Toast.LENGTH_SHORT).show()
+            onItemClickCallback.onItemClicked(listWayang[position])
         }
     }
 }
